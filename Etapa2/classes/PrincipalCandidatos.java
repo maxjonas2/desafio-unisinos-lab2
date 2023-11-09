@@ -3,7 +3,7 @@ package Etapa2.classes;
 import java.util.Arrays;
 import java.util.Random;
 
-public class PrincipalCandidatos {
+public class PrincipalCandidatos implements PCandidatos {
     private static Random rand = new Random((long) (10e6));
 
     /*
@@ -106,6 +106,11 @@ public class PrincipalCandidatos {
         return copiaLista;
     }
 
+    public int pesquisaBinariaCandidatos(Candidato[] candidatos) {
+        /* IMPLEMENTAR */
+        return 0;
+    }
+
     public static int getRandomInt(int max) {
 
         int randomNumber = rand.nextInt(0, max);
@@ -120,4 +125,8 @@ public class PrincipalCandidatos {
                 getRandomInt(50));
         return cand;
     }
+}
+
+interface PCandidatos {
+    public int pesquisaBinariaCandidatos(Candidato[] candidatos);
 }
