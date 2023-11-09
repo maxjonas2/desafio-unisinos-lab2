@@ -1,6 +1,6 @@
 package Etapa2.classes;
 
-public class Candidato {
+public class Candidato implements PossuiNome {
     protected String nome;
     protected String partido;
     protected int intencoesVotos;
@@ -40,4 +40,8 @@ public class Candidato {
         return "Candidato [nome=" + nome + ", partido=" + partido + ", intencoesVotos=" + intencoesVotos + "]";
     }
 
+}
+
+interface PossuiNome {
+    public String getNome();
 }
