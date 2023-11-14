@@ -9,18 +9,29 @@ import java.nio.file.Paths;
 public class Labirinto {
 
     public static void main(String[] args) throws IOException {
-        // Labirinto lab = new Labirinto();
-
+        Labirinto lab = new Labirinto(20, 13);
+        Labirinto.printLabirinto(lab);
+        // BufferedReader reader = Labirinto.getFileReader("lab.txt");
+        // String line;
+        // while ((line = reader.readLine()) != null) {
+        // System.out.println(line);
+        // }
     }
 
-    protected char[][] maze = new char[10][10];
+    protected char[][] maze;
 
-    public Labirinto() throws IOException {
+    public Labirinto(int tamanhoX, int tamanhoY) throws IOException {
+        this.maze = new char[tamanhoY][tamanhoX];
         BufferedReader reader = getFileReader("lab.txt");
         String line;
+        int count = 0;
         while ((line = reader.readLine()) != null) {
-            this.maze[0] = line.toCharArray();
+            this.maze[count++] = line.toCharArray();
         }
+    }
+
+    private static void printLabirinto(Labirinto lab) {
+
     }
 
     protected boolean percorreLabirinto(int row, int col) {
@@ -33,11 +44,10 @@ public class Labirinto {
 
     }
 
-    private BufferedReader getFileReader(String filename) {
+    private static BufferedReader getFileReader(String filename) {
         try {
-            // File file = new File(Folder);
-            String resolvedPath = resolvePath(filename);
-            File file = Paths.get(resolvedPath).toFile();
+            String caminho = resolverCaminho(filename);
+            File file = Paths.get(caminho).toFile();
             BufferedReader reader = new BufferedReader(new FileReader(file));
             return reader;
 
@@ -47,7 +57,7 @@ public class Labirinto {
         }
     }
 
-    private String resolvePath(String filename) {
+    private static String resolverCaminho(String filename) {
         String dir = System.getProperty("user.dir");
         String sep = File.separator;
         String[] path = new String[] { sep, "Etapa1", sep, "classes", sep, filename };

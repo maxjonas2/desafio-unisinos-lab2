@@ -1,57 +1,67 @@
 package Etapa4;
 
-import java.util.Queue;
-
 import exceptions.OverflowException;
 import exceptions.UnderflowException;
-
-import java.lang.Object;
-
 import interfaces.IQueue;
 
 public class StaticQueue<E> implements IQueue<E> {
 
-    protected int last = 0;
+    protected int first = -1;
+    protected int last = -1;
     protected int size = 0;
     protected E[] queue;
 
     @SuppressWarnings("unchecked")
-    public StaticQueue(E firstElement, int size) {
+    public StaticQueue(int size) {
+        if (size <= 0)
+            throw new IllegalArgumentException();
         this.queue = (E[]) new Object[size];
     }
 
     public E back() throws UnderflowException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public E dequeue() throws UnderflowException {
-        // TODO Auto-generated method stub
-        return null;
+        if (this.isEmpty())
+            throw new UnderflowException("Lista vazia");
+
+        E element = this.queue[first];
+        this.queue[first] = null;
+
+        this.first++;
+
+        if (this.first == this.queue.length - 1)
+            this.first = 0;
+
+        return element;
     }
 
     public void enqueue(E element) throws OverflowException {
-        // TODO Auto-generated method stub
+        if (this.isFull())
+            throw new OverflowException("Fila cheia.");
+
+        // Check if is end of array
+
+        this.last++;
+        this.queue[this.last] = element;
 
     }
 
     public E front() throws UnderflowException {
-        // TODO Auto-generated method stub
-        return null;
+        // Handle circleback case
+        return this.queue[this.first];
     }
 
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        return this.last == -1 && this.first == -1;
     }
 
     public boolean isFull() {
-        // TODO Auto-generated method stub
-        return false;
+        return Math.abs(this.last) - Math.abs(this.first) == this.size - 1;
     }
 
     public int numElements() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
