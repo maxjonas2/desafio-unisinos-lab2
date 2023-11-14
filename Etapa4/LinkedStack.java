@@ -1,9 +1,12 @@
 package Etapa4;
 
-public class LinkedStack<T> implements Stack<T> {
+import exceptions.UnderflowException;
+import interfaces.IStack;
+
+public class LinkedStack<T> implements IStack<T> {
 
     public static void main(String[] args) {
-        LinkedStack<String> stringStack = new LinkedStack<String>("Teste");
+        LinkedStack<String> stringStack = new LinkedStack<String>("Teste", 10);
         stringStack.push("Nome 1");
         stringStack.push("Nome 2");
         stringStack.push("Nome 3");
@@ -11,20 +14,26 @@ public class LinkedStack<T> implements Stack<T> {
     }
 
     public Node<T> head;
+    public int last = 0;
     public int size = 0;
 
-    public LinkedStack(T firstValue) {
+    public LinkedStack(T firstValue, int size) {
         Node<T> firstNode = new Node<T>(firstValue);
         this.head = firstNode;
-        this.size++;
+        this.size = size == 0 ? 1 : size;
+        this.last++;
     }
 
-    public T pop() throws Exception {
-        if (this.size == 0)
-            throw new Exception("Underflow");
+    public static String teste(int val) {
+        return (Integer.toString(val));
+    }
+
+    public T pop() throws UnderflowException {
+        if (this.last == 0)
+            throw new UnderflowException("Underflow");
         T value = this.head.value;
         this.head = this.head.next;
-        this.size--;
+        this.last--;
         return value;
     }
 
@@ -33,19 +42,23 @@ public class LinkedStack<T> implements Stack<T> {
         Node<T> temp = this.head;
         this.head = newNode;
         this.head.next = temp;
-        this.size++;
+        this.last++;
+    }
+
+    public boolean isEmpty() {
+        return this.last == 0;
+    }
+
+    public boolean isFull() {
+        return this.last == this.size;
     }
 
     public T top() {
         // Check if empty
         return this.head.value;
     }
-}
 
-interface Stack<T> {
-    public void push(T value);
-
-    public T top();
-
-    public T pop() throws Exception;
+    public int numElements() {
+        return this.last;
+    }
 }
