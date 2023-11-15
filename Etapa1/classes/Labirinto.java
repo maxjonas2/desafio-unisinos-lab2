@@ -8,14 +8,18 @@ import java.nio.file.Paths;
 
 public class Labirinto {
 
+    static int attempts = 0;
+
     public static void main(String[] args) throws IOException {
-        Labirinto lab = new Labirinto(20, 13);
-        Labirinto.printLabirinto(lab);
+        Labirinto lab = new Labirinto(22, 13);
+        // Labirinto.printLabirinto(lab);
         // BufferedReader reader = Labirinto.getFileReader("lab.txt");
         // String line;
         // while ((line = reader.readLine()) != null) {
         // System.out.println(line);
         // }
+
+        print(lab.percorreLabirinto() ? "Encontrou saída" : "Nope!");
     }
 
     protected char[][] maze;
@@ -30,18 +34,49 @@ public class Labirinto {
         }
     }
 
-    private static void printLabirinto(Labirinto lab) {
-
+    public static void printLabirinto(Labirinto lab) {
+        for (char[] line : lab.maze) {
+            print(String.valueOf(line));
+        }
     }
 
-    protected boolean percorreLabirinto(int row, int col) {
+    public boolean percorreLabirinto() {
 
-        if (this.maze[row][col] == 'S') {
+        try {
+            return percorreLabirinto(0, 0, this.maze);
+        } catch (Exception e) {
+            print(e.getMessage());
+            return false;
+        }
+    }
+
+    protected boolean percorreLabirinto(int row, int col, char[][] maze) throws Exception {
+
+        Labirinto.attempts++;
+
+        print("Attempt number " + Labirinto.attempts + ". Row " + row + " | Col " + col);
+
+        if (Labirinto.attempts > 500)
+            throw new Exception("Exceeded max number of attempts");
+
+        if (maze[row][col] == 'V' || maze[row][col] == 'X' || row < 0 || col < 0 || row >= maze.length
+                || col >= maze[0].length
+                || maze[row][col] == 'V')
+            return false;
+
+        if (this.maze[row][col] == 'D') {
+            System.out.printf("Encontrou saida na celula [%d][%d]", row + 1, col + 1);
             return true;
-        } else {
-            return percorreLabirinto(1, 1);
         }
 
+        this.maze[row][col] = 'V';
+
+        if (percorreLabirinto(row + 1, col, maze) || percorreLabirinto(row - 1, col, maze)
+                || percorreLabirinto(row, col + 1, maze) || percorreLabirinto(row, col - 1, maze)) {
+            return true;
+        }
+
+        return false;
     }
 
     private static BufferedReader getFileReader(String filename) {
@@ -67,5 +102,9 @@ public class Labirinto {
         }
 
         return dir;
+    }
+
+    private static void print(Object o) {
+        System.out.println(o);
     }
 }
