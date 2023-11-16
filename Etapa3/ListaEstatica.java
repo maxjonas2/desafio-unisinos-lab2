@@ -1,18 +1,20 @@
 package Etapa3;
 
-public class ListaEstatica<T> {
+import java.util.Stack;
 
-    protected T[] list;
+public class ListaEstatica<E> {
+
+    protected E[] list;
     protected int size = 0;
     public int length = 0;
 
     @SuppressWarnings("unchecked")
     public ListaEstatica(int size) {
 
-        this.list = (T[]) new Object[size];
+        this.list = (E[]) new Object[size];
     }
 
-    public void add(T element) {
+    public void add(E element) {
         if (this.isFull())
             throw new StackOverflowError();
 
@@ -20,7 +22,7 @@ public class ListaEstatica<T> {
         this.length++;
     }
 
-    public T get(int pos) {
+    public E get(int pos) {
         if (this.isEmpty() || pos + 1 > this.length)
             throw new IndexOutOfBoundsException();
         return this.list[pos];
@@ -34,7 +36,7 @@ public class ListaEstatica<T> {
         return this.length == this.size;
     }
 
-    public int contaElementos(T el) throws Exception {
+    public int contaElementos(E el) throws Exception {
         if (this.isEmpty())
             throw new Exception("Lista vazia");
 
