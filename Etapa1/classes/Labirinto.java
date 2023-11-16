@@ -6,22 +6,54 @@ import java.io.IOException;
 public class Labirinto {
 
     static int tentativas = 0;
-    protected char[][] maze;
+    protected char[][] maze = null;
 
     public static void main(String[] args) throws IOException {
-        Labirinto lab = new Labirinto(22, 13);
-
-        lab.percorreLabirinto();
+        Labirinto lab = new Labirinto();
+        lab.criaLabirinto("lab.txt");
+        Labirinto.printLabirinto(lab);
+        if (!lab.percorreLabirinto()) {
+            System.out.println("Labirinto sem saída.");
+        }
     }
 
-    public Labirinto(int tamanhoX, int tamanhoY) throws IOException {
-        this.maze = new char[tamanhoY][tamanhoX];
-        BufferedReader reader = (new LeitorArquivo("lab.txt")).getReader();
+    public Labirinto() {
+    }
+
+    public Labirinto(String filename) throws IOException {
+        this.criaLabirinto(filename);
+    }
+
+    public void criaLabirinto(String filename) throws IOException {
+        if (this.maze != null)
+            throw new IllegalStateException("Labirinto já criado via construtor.");
+
+        this.maze = new char[1][1];
+        BufferedReader reader = (new LeitorArquivo(filename)).getReader();
         String line;
-        int count = 0;
+
+        int rowCount = 0;
+        int colCount = 0;
+
         while ((line = reader.readLine()) != null) {
-            this.maze[count++] = line.toCharArray();
+            rowCount++;
+            colCount = Math.max(line.length(), colCount);
         }
+
+        reader.close();
+        reader = (new LeitorArquivo(filename)).getReader();
+
+        this.maze = new char[rowCount][colCount];
+
+        int currentRow = 0;
+
+        while ((line = reader.readLine()) != null) {
+            char lineChars[] = line.toCharArray();
+            this.maze[currentRow] = lineChars;
+            currentRow++;
+        }
+
+        reader.close();
     }
 
     public static void printLabirinto(Labirinto lab) {
