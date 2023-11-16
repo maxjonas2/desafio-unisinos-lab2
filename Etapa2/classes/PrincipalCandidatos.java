@@ -3,8 +3,10 @@ package Etapa2.classes;
 import java.util.Arrays;
 import java.util.Random;
 
-public class PrincipalCandidatos implements PCandidatos {
-    private static Random rand = new Random((long) (10e6));
+public class PrincipalCandidatos {
+    private static Random rand = new Random();
+
+    static private int recursionCount = 0;
 
     /*
      * Utilize EXCLUSIVAMENTE os métodos de ordenação Inserção
@@ -22,6 +24,14 @@ public class PrincipalCandidatos implements PCandidatos {
 
         Candidato[] listaOrdenada = ordenaCandidatos(candidatos);
         imprimeCandidatos(listaOrdenada);
+        int pos = pesquisaBinariaCandidatos(listaOrdenada, "lula");
+
+        if (pos >= 0) {
+            Candidato cand = listaOrdenada[pos];
+            System.out.println("Encontrado candidato " + cand.getNome() + " do partido " + cand.getPartido());
+        } else {
+            System.out.println("Nenhum candidato encontrado.");
+        }
     }
 
     public static void imprimeCandidatos(Candidato[] candidatos) {
@@ -31,8 +41,38 @@ public class PrincipalCandidatos implements PCandidatos {
         }
     }
 
+    public static int pesquisaBinariaCandidatos(Candidato[] candidatos, String nomeProcurado) {
+
+        Candidato[] cands = ordenaCandidatosPorNome(candidatos);
+        return pesquisaBinariaCandidatos(nomeProcurado, cands, 0, cands.length - 1);
+    }
+
+    private static int pesquisaBinariaCandidatos(String nomeProcurado, Candidato[] candidatos, int inf, int sup) {
+        if (++recursionCount > 100) {
+            throw new StackOverflowError("Numero maximo de buscas excedido.");
+        }
+
+        if (inf > sup)
+            return -1;
+
+        int mid = (int) Math.floor((inf + sup) / 2);
+
+        if (candidatos[mid].getNome().toLowerCase().equals(nomeProcurado.toLowerCase())) {
+            return mid;
+        } else {
+            if (isNomeMaior(nomeProcurado, candidatos[mid].getNome())) {
+                return pesquisaBinariaCandidatos(nomeProcurado, candidatos, mid + 1, sup);
+            } else {
+                return pesquisaBinariaCandidatos(nomeProcurado, candidatos, inf, mid - 1);
+            }
+        }
+    }
+
+    private static boolean isNomeMaior(String a, String b) {
+        return a.toLowerCase().compareTo(b.toLowerCase()) > 0;
+    }
+
     public static Candidato[] ordenaCandidatosPorNome(Candidato[] listaCands) {
-        // Insetion sort
 
         Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
 
@@ -106,11 +146,6 @@ public class PrincipalCandidatos implements PCandidatos {
         return copiaLista;
     }
 
-    public int pesquisaBinariaCandidatos(Candidato[] candidatos) {
-        /* IMPLEMENTAR */
-        return 0;
-    }
-
     public static int getRandomInt(int max) {
 
         int randomNumber = rand.nextInt(0, max);
@@ -125,8 +160,4 @@ public class PrincipalCandidatos implements PCandidatos {
                 getRandomInt(50));
         return cand;
     }
-}
-
-interface PCandidatos {
-    public int pesquisaBinariaCandidatos(Candidato[] candidatos);
 }
