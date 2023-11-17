@@ -14,6 +14,7 @@ public class Labirinto {
         Labirinto.printLabirinto(lab);
         if (!lab.percorreLabirinto()) {
             System.out.println("Labirinto sem saída.");
+
         }
     }
 
@@ -28,7 +29,6 @@ public class Labirinto {
         if (this.maze != null)
             throw new IllegalStateException("Labirinto já criado via construtor.");
 
-        this.maze = new char[1][1];
         BufferedReader reader = (new LeitorArquivo(filename)).getReader();
         String line;
 
@@ -48,7 +48,15 @@ public class Labirinto {
         int currentRow = 0;
 
         while ((line = reader.readLine()) != null) {
-            char lineChars[] = line.toCharArray();
+            int lineLength = line.length();
+            char lineChars[] = new char[colCount];
+            for (int i = 0; i < lineChars.length; i++) {
+                if (i < lineLength) {
+                    lineChars[i] = line.charAt(i);
+                } else {
+                    lineChars[i] = ' ';
+                }
+            }
             this.maze[currentRow] = lineChars;
             currentRow++;
         }
@@ -67,7 +75,7 @@ public class Labirinto {
         try {
             return percorreLabirinto(0, 0, this.maze);
         } catch (Exception e) {
-            print(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -82,9 +90,8 @@ public class Labirinto {
         if (Labirinto.tentativas > 1000)
             throw new Exception("Numero maximo de tentativas excedido.");
 
-        if (row < 0 || col < 0 || maze[row][col] == 'V' || maze[row][col] == 'X' || row >= maze.length
-                || col >= maze[0].length
-                || maze[row][col] == 'V') {
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length || maze[row][col] == 'V'
+                || maze[row][col] == 'X') {
 
             return false;
         }
