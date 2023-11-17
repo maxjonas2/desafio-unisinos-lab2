@@ -13,7 +13,7 @@ public class Labirinto {
         lab.criaLabirinto("lab.txt");
         Labirinto.printLabirinto(lab);
         if (!lab.percorreLabirinto()) {
-            System.out.println("Labirinto sem saída.");
+            print("Labirinto sem saída.");
 
         }
     }
@@ -75,7 +75,7 @@ public class Labirinto {
         try {
             return percorreLabirinto(0, 0, this.maze);
         } catch (Exception e) {
-            e.printStackTrace();
+            print(e.getMessage());
             return false;
         }
     }
@@ -83,9 +83,6 @@ public class Labirinto {
     protected boolean percorreLabirinto(int row, int col, char[][] maze) throws Exception {
 
         Labirinto.tentativas++;
-
-        // print("Attempt number " + Labirinto.tentativas + ". Row " + row + " | Col " +
-        // col);
 
         if (Labirinto.tentativas > 1000)
             throw new Exception("Numero maximo de tentativas excedido.");

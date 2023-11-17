@@ -1,9 +1,9 @@
 package Etapa2.classes;
 
 public class Candidato implements PossuiNome {
-    protected String nome;
-    protected String partido;
-    protected int intencoesVotos;
+    private String nome;
+    private String partido;
+    private int intencoesVotos;
 
     public Candidato(String nome, String partido, int intencoesVotos) {
         this.nome = nome;

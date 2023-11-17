@@ -2,17 +2,12 @@ package Etapa2.classes;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class PrincipalCandidatos {
     private static Random rand = new Random();
 
     static private int recursionCount = 0;
-
-    /*
-     * Utilize EXCLUSIVAMENTE os métodos de ordenação Inserção
-     * Direta e Seleção Direta (com as alterações necessárias) para
-     * realizar a ordenação do array de Candidato.
-     */
 
     public static void main(String args[]) {
         int aleatorio = rand.nextInt(1, 100);
@@ -23,22 +18,38 @@ public class PrincipalCandidatos {
         }
 
         Candidato[] listaOrdenada = ordenaCandidatos(candidatos);
+
         imprimeCandidatos(listaOrdenada);
-        int pos = pesquisaBinariaCandidatos(listaOrdenada, "lula");
+
+        String inputUsuario = lerInput("Digite o nome do candidato a procurar:");
+
+        int pos = pesquisaBinariaCandidatos(listaOrdenada, inputUsuario);
 
         if (pos >= 0) {
             Candidato cand = listaOrdenada[pos];
-            System.out.println("Encontrado candidato " + cand.getNome() + " do partido " + cand.getPartido());
+            printSep();
+            print("Encontrado candidato " + cand.getNome() + " do partido " + cand.getPartido() + " na posicao " + pos);
         } else {
-            System.out.println("Nenhum candidato encontrado.");
+            printSep();
+            print("Nenhum candidato encontrado.");
         }
     }
 
+    private static String lerInput(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+        print(prompt);
+        String input = scanner.nextLine();
+        scanner.close();
+        return input;
+    }
+
     public static void imprimeCandidatos(Candidato[] candidatos) {
+        print("Lista de candidatos:\n");
         for (int i = 0; i < candidatos.length; i++) {
-            System.out.println(candidatos[i].nome + " - " + (candidatos[i].getIntencoesVotos()) + " - "
+            print(candidatos[i].getNome() + " - " + (candidatos[i].getIntencoesVotos()) + " - "
                     + (candidatos[i].getPartido()));
         }
+        printSep();
     }
 
     public static int pesquisaBinariaCandidatos(Candidato[] candidatos, String nomeProcurado) {
@@ -102,7 +113,6 @@ public class PrincipalCandidatos {
     }
 
     public static Candidato[] ordenaCandidatosPorVotos(Candidato[] listaCands) {
-        // Selection sort
 
         Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
 
@@ -154,10 +164,18 @@ public class PrincipalCandidatos {
     }
 
     public static Candidato obterCandidatoAleatorio() {
-        String nomes[] = new String[] { "Amanda", "Lula", "Bolsonaro", "Matheus", "Jonas" };
-        String partidos[] = new String[] { "ABL", "PL", "PTBX", "PartidoTopster" };
+        String nomes[] = new String[] { "Amanda", "Patricia", "George", "Michael", "Vinicius" };
+        String partidos[] = new String[] { "ABL", "PLT", "PTB", "XLL" };
         Candidato cand = new Candidato(nomes[getRandomInt(nomes.length)], partidos[getRandomInt(partidos.length)],
                 getRandomInt(50));
         return cand;
+    }
+
+    private static void print(Object o) {
+        System.out.println(o);
+    }
+
+    private static void printSep() {
+        print("----------------------");
     }
 }
