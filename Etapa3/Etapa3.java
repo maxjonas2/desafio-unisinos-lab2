@@ -1,8 +1,6 @@
 package Etapa3;
 
-import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 public class Etapa3 {
 

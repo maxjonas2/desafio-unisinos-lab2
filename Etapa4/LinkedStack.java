@@ -31,8 +31,8 @@ public class LinkedStack<T> implements IStack<T> {
     public T pop() throws UnderflowException {
         if (this.last == 0)
             throw new UnderflowException("Underflow");
-        T value = this.head.value;
-        this.head = this.head.next;
+        T value = this.head.getElement();
+        this.head = this.head.getNext();
         this.last--;
         return value;
     }
@@ -53,9 +53,11 @@ public class LinkedStack<T> implements IStack<T> {
         return this.last == this.size;
     }
 
-    public T top() {
-        // Check if empty
-        return this.head.value;
+    public T top() throws UnderflowException {
+        if (this.last == 0)
+            throw new UnderflowException("Underflow");
+        T value = this.head.getElement();
+        return value;
     }
 
     public int numElements() {

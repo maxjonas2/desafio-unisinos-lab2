@@ -39,6 +39,7 @@ public class StaticQueue<E> implements IQueue<E> {
         if (this.isEmpty())
             throw new UnderflowException("Lista está vazia.");
         return this.queue[last];
+
     }
 
     public E dequeue() throws UnderflowException {

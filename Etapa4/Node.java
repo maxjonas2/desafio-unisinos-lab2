@@ -1,13 +1,30 @@
 package Etapa4;
 
-public class Node<T> {
+public class Node<E> {
 
-    public T value;
-    public Node<T> next;
+    protected E element;
+    protected Node<E> next;
 
-    public Node(T value) {
-        this.value = value;
-        this.next = null;
+    public Node(E e) {
+        element = e;
+        next = null;
+    }
+
+    public E getElement() {
+        return element;
+
+    }
+
+    public Node<E> getNext() {
+        return next;
+    }
+
+    public void setElement(E e) {
+        element = e;
+    }
+
+    public void setNext(Node<E> n) {
+        next = n;
     }
 
 }
