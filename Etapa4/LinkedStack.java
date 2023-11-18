@@ -41,7 +41,7 @@ public class LinkedStack<T> implements IStack<T> {
         Node<T> newNode = new Node<T>(value);
         Node<T> temp = this.head;
         this.head = newNode;
-        this.head.next = temp;
+        this.head.setNext(temp);
         this.last++;
     }
 

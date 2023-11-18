@@ -2,8 +2,8 @@ package Etapa4;
 
 public class Node<E> {
 
-    protected E element;
-    protected Node<E> next;
+    private E element;
+    private Node<E> next;
 
     public Node(E e) {
         element = e;

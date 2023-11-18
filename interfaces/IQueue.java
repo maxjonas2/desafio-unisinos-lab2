@@ -55,4 +55,6 @@ public interface IQueue<E> {
 	 * @return O ultimo elemento da pilha
 	 */
 	public E back() throws UnderflowException;
+
+	public void printQueue() throws UnderflowException;
 }
