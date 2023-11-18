@@ -58,6 +58,8 @@ public class ListaEstatica<E> {
         return this.numElementos == this.size;
     }
 
+    // conta elementos atraves de simples iteracao, verificacao de nulo e comparacao
+    // via 'equals'
     public int contaElementos(E el) throws UnderflowException {
         if (this.isEmpty())
             throw new UnderflowException("Lista vazia");

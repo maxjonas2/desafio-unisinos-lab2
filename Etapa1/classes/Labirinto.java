@@ -21,6 +21,7 @@ public class Labirinto {
     public Labirinto() {
     }
 
+    // Construtor opcional para passar o nome do arquivo diretamente
     public Labirinto(String filename) throws IOException {
         this.criaLabirinto(filename);
     }
@@ -35,6 +36,7 @@ public class Labirinto {
         int rowCount = 0;
         int colCount = 0;
 
+        // Le arquivo para contar linhas e numero maximo de colunas
         while ((line = reader.readLine()) != null) {
             rowCount++;
             colCount = Math.max(line.length(), colCount);
@@ -43,10 +45,13 @@ public class Labirinto {
         reader.close();
         reader = (new LeitorArquivo(filename)).getReader();
 
+        // Inicializa estrutura que armazena o labirinto, uma matriz de char
         this.maze = new char[rowCount][colCount];
 
         int currentRow = 0;
 
+        // Iterara sobre o arquivo e joga os chars lidos para dentro da variavel
+        // labirinto
         while ((line = reader.readLine()) != null) {
             int lineLength = line.length();
             char lineChars[] = new char[colCount];
@@ -64,6 +69,7 @@ public class Labirinto {
         reader.close();
     }
 
+    // metodo auxilar para imprimir labirinto
     public static void printLabirinto(Labirinto lab) {
         for (char[] line : lab.maze) {
             print(String.valueOf(line));
@@ -80,31 +86,40 @@ public class Labirinto {
         }
     }
 
-    protected boolean percorreLabirinto(int row, int col, char[][] maze) throws Exception {
+    // metodo que percorre o labirinto usando recursao
+    private boolean percorreLabirinto(int row, int col, char[][] maze) throws Exception {
 
+        // manter numero de tentativas em variavel estatica
         Labirinto.tentativas++;
 
         if (Labirinto.tentativas > 1000)
             throw new Exception("Numero maximo de tentativas excedido.");
 
+        // verifica condicoes que retornam falso na recursao atual
         if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length || maze[row][col] == 'V'
                 || maze[row][col] == 'X') {
 
             return false;
         }
 
+        // encontra saida e reporta a celula (linha/coluna) e numero de movimentos
+        // (recursoes) usadas
         if (this.maze[row][col] == 'D') {
             System.out.printf("Encontrou saida na celula [%d][%d] após %d movimentos", row + 1, col + 1, tentativas);
             return true;
         }
 
+        // marca a atual celula como visitada
         this.maze[row][col] = 'V';
 
+        // inicia recursao se movemento uma casa em cada direcao
+        // se uma recursao retorna falso, vai para o proximo movimento possivel
         if (percorreLabirinto(row + 1, col, maze) || percorreLabirinto(row - 1, col, maze)
                 || percorreLabirinto(row, col + 1, maze) || percorreLabirinto(row, col - 1, maze)) {
             return true;
         }
 
+        // caso nenuma condicao seja satisfeita, retorna falso (labirinto sem saida)
         return false;
     }
 

@@ -1,66 +1,77 @@
 package Etapa4;
 
+import exceptions.OverflowException;
 import exceptions.UnderflowException;
 import interfaces.IStack;
 
 public class LinkedStack<T> implements IStack<T> {
 
     public static void main(String[] args) {
-        LinkedStack<String> stringStack = new LinkedStack<String>("Teste", 10);
+
+        LinkedStack<String> stringStack = new LinkedStack<String>(4);
+
         stringStack.push("Nome 1");
         stringStack.push("Nome 2");
         stringStack.push("Nome 3");
+        stringStack.push("Nome 4");
+
+        System.out.println(stringStack.pop());
+        System.out.println(stringStack.pop());
+        System.out.println(stringStack.pop());
+        System.out.println(stringStack.pop());
 
     }
 
-    public Node<T> head;
-    public int last = 0;
-    public int size = 0;
+    public Node<T> head = null;
+    public int numElements = 0;
+    public int maxSize = 0;
 
-    public LinkedStack(T firstValue, int size) {
-        Node<T> firstNode = new Node<T>(firstValue);
-        this.head = firstNode;
-        this.size = size == 0 ? 1 : size;
-        this.last++;
-    }
-
-    public static String teste(int val) {
-        return (Integer.toString(val));
+    public LinkedStack(int maxSize) {
+        this.maxSize = maxSize;
     }
 
     public T pop() throws UnderflowException {
-        if (this.last == 0)
+        if (this.numElements == 0)
             throw new UnderflowException("Underflow");
         T value = this.head.getElement();
         this.head = this.head.getNext();
-        this.last--;
+        this.numElements--;
         return value;
     }
 
-    public void push(T value) {
+    public void push(T value) throws OverflowException {
+        if (this.numElements >= this.maxSize)
+            throw new OverflowException("Lista cheia.");
+
         Node<T> newNode = new Node<T>(value);
-        Node<T> temp = this.head;
-        this.head = newNode;
-        this.head.setNext(temp);
-        this.last++;
+        if (this.numElements == 0) {
+            this.head = newNode;
+        } else {
+            Node<T> temp = this.head;
+            this.head = newNode;
+            this.head.setNext(temp);
+        }
+
+        this.numElements++;
     }
 
     public boolean isEmpty() {
-        return this.last == 0;
+        return this.numElements == 0;
     }
 
     public boolean isFull() {
-        return this.last == this.size;
+        return this.numElements == this.maxSize;
     }
 
     public T top() throws UnderflowException {
-        if (this.last == 0)
+        if (this.numElements == 0)
             throw new UnderflowException("Underflow");
         T value = this.head.getElement();
         return value;
     }
 
     public int numElements() {
-        return this.last;
+        return this.numElements;
     }
+
 }

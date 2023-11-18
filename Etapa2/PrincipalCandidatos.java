@@ -1,4 +1,3 @@
-package Etapa2.classes;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -52,6 +51,7 @@ public class PrincipalCandidatos {
         printSep();
     }
 
+    // pesquisa binaria de candidatos
     public static int pesquisaBinariaCandidatos(Candidato[] candidatos, String nomeProcurado) {
 
         Candidato[] cands = ordenaCandidatosPorNome(candidatos);
@@ -83,6 +83,21 @@ public class PrincipalCandidatos {
         return a.toLowerCase().compareTo(b.toLowerCase()) > 0;
     }
 
+    // ordena candidatos na ordem de criterios solicitada, aninhando as chamadas dos
+    // metodos de acordo
+    public static Candidato[] ordenaCandidatos(Candidato[] listaCands) {
+        Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
+
+        Candidato[] ordenado = ordenaCandidatosPorNome(
+                ordenaCandidatosPorVotos(ordenaCandidatosPorPartido(copiaLista)));
+
+        return ordenado;
+
+    }
+
+    // insertion sort para ordenar por nome e usando 'compareTo' de String para
+    // verificar a relacao alfabetica
+    // (maior ou menor)
     public static Candidato[] ordenaCandidatosPorNome(Candidato[] listaCands) {
 
         Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
@@ -102,16 +117,9 @@ public class PrincipalCandidatos {
         return copiaLista;
     }
 
-    public static Candidato[] ordenaCandidatos(Candidato[] listaCands) {
-        Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
-
-        Candidato[] ordenado = ordenaCandidatosPorNome(
-                ordenaCandidatosPorVotos(ordenaCandidatosPorPartido(copiaLista)));
-
-        return ordenado;
-
-    }
-
+    // selection sort para ordenar por votos
+    // itera sobre a lista, encontra o menor valor (indice minIndex) e joga para o
+    // indice 'i' (atual)
     public static Candidato[] ordenaCandidatosPorVotos(Candidato[] listaCands) {
 
         Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
@@ -134,6 +142,7 @@ public class PrincipalCandidatos {
         return copiaLista;
     }
 
+    // selection sort para ordenar candidatos por partido
     public static Candidato[] ordenaCandidatosPorPartido(Candidato[] listaCands) {
 
         Candidato[] copiaLista = Arrays.copyOf(listaCands, listaCands.length);
@@ -156,6 +165,7 @@ public class PrincipalCandidatos {
         return copiaLista;
     }
 
+    // metodos auxiliares para gerar candidatos aleatorios usando objeto "random"
     public static int getRandomInt(int max) {
 
         int randomNumber = rand.nextInt(0, max);

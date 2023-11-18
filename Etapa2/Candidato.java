@@ -1,6 +1,5 @@
-package Etapa2.classes;
 
-public class Candidato implements PossuiNome {
+public class Candidato {
     private String nome;
     private String partido;
     private int intencoesVotos;
