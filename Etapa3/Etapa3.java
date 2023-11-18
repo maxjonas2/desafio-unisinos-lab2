@@ -1,12 +1,14 @@
 package Etapa3;
 
+import java.util.List;
 import java.util.Stack;
+import java.util.Vector;
 
 public class Etapa3 {
 
     public static void main(String args[]) {
         Stack<Character> expression = new Stack<>();
-        String exp = "(((a + b)) - (c + a))";
+        String exp = "(((a + b) * (c + a)) * (c + d))";
 
         for (char c : exp.toCharArray()) {
             expression.push(c);
@@ -14,27 +16,34 @@ public class Etapa3 {
 
         boolean isOk = checkBrackets(expression);
 
-        System.out.println(isOk);
+        System.out.println("A sequencia esta " + (isOk ? "correta" : "incorreta"));
 
     }
 
-    public static boolean checkBrackets(Stack<Character> s) {
+    public static boolean checkBrackets(Stack<Character> s1) {
 
-        Stack<Character> parentheses = new Stack<>();
+        Stack<Character> stack = new Stack<>();
 
-        int size = s.size();
+        while (!s1.isEmpty()) {
+            char current = s1.pop();
 
-        for (int i = 0; i < size; i++) {
-            char c = s.pop();
-            if (c == '(' || c == ')') {
-                parentheses.push(c);
+            if (current == ')') {
+                stack.push(current);
+            } else if (current == '(') {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char top = stack.peek();
+                if ((current == '(' && top == ')')) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
             }
         }
 
-        if (parentheses.size() % 2 != 0) {
-            return false;
-        }
-
-        return true;
+        return stack.isEmpty();
     }
+
 }

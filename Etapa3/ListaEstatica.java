@@ -1,7 +1,5 @@
 package Etapa3;
 
-import java.util.Stack;
-
 import exceptions.OverflowException;
 import exceptions.UnderflowException;
 
